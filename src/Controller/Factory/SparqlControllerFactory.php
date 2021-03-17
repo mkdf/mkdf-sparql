@@ -5,14 +5,14 @@ use MKDF\Datasets\Repository\MKDFDatasetRepositoryInterface;
 use MKDF\Core\Repository\MKDFCoreRepositoryInterface;
 use MKDF\Datasets\Service\DatasetPermissionManagerInterface;
 use MKDF\Keys\Repository\MKDFKeysRepositoryInterface;
-use MKDF\Stream\Controller\StreamController;
+use MKDF\Sparql\Controller\SparqlController;
 use MKDF\Stream\Repository\Factory\MKDFStreamRepositoryFactory;
 use MKDF\Stream\Repository\MKDFStreamRepositoryInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Zend\Session\SessionManager;
 
-class StreamControllerFactory implements FactoryInterface
+class SparqlControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -23,6 +23,6 @@ class StreamControllerFactory implements FactoryInterface
         $keys_repository = $container->get(MKDFKeysRepositoryInterface::class);
         $sessionManager = $container->get(SessionManager::class);
         $permissionManager = $container->get(DatasetPermissionManagerInterface::class);
-        return new StreamController($keys_repository, $dataset_repository, $repository, $config, $permissionManager);
+        return new SparqlController($keys_repository, $dataset_repository, $repository, $config, $permissionManager);
     }
 }
