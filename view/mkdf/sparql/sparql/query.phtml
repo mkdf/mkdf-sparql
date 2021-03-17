@@ -1,1 +1,49 @@
-<?= $message ?>
+<h1><?= $dataset->title ?></h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->partial('mkdf/datasets/partial/dataset-features', ['features' => $features, 'dataset_id' => $dataset->id] ) ?>
+        </div>
+        <div class="col-md-9">
+            <h2>API SPARQL Interface</h2>
+            <?php
+            if ($can_read && !$user_has_key && $stream_exists){
+                //Add subscribe button
+                $actions['buttons'][] = [
+                    'type' => 'primary',
+                    'label' => 'Subscribe',
+                    'icon' => 'bookmark',
+                    'target' => 'stream',
+                    'params' => [
+                        'action' => 'subscribe',
+                        'id' => $dataset->id
+                    ]
+                ];
+            }
+            ?>
+
+            <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
+            <!--
+            UUID: <?= $dataset->uuid ?><br />
+            -->
+
+            <?php if($stream_exists): ?>
+                <?= $this->partial('mkdf/sparql/partial/query-interface', [
+                    'stream_url'    => $stream_url,
+                    'read_url'	=> $read_url,
+                    'write_url'	=> $write_url,
+                    'browse_url'	=> $browse_url,
+                    'api_home'	=> $api_home,
+                    'doc_count'     => $doc_count,
+                    'dataset'       => $dataset,
+                    'can_read'      => $can_read,
+                    'user_has_key'  => $user_has_key
+                ] ) ?>
+            <?php endif; ?>
+
+            <?php if(!$stream_exists): ?>
+                <?= $this->partial('mkdf/stream/partial/stream-inactive', ['dataset' => $dataset, 'keys' => $keys, 'can_edit' => $can_edit] ) ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
