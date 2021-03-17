@@ -4,7 +4,7 @@ namespace MKDF\Sparql\Feature\Factory;
 
 use Interop\Container\ContainerInterface;
 use MKDF\Datasets\Repository\MKDFDatasetRepositoryInterface;
-use MKDF\Sparql\Feature\StreamFeature;
+use MKDF\Sparql\Feature\SparqlFeature;
 use MKDF\Stream\Repository\MKDFStreamRepositoryInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
