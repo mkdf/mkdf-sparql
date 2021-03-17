@@ -1,0 +1,44 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Stream active</h5>
+        <h6 class="card-subtitle mb-2 text-muted">This Stream API is active and ready for read/write operations</h6>
+        <p class="card-text">
+
+        <table class="table table-bordered">
+            <tr>
+                <th>UUID:</th>
+                <td><?= $this->escapeHtml($dataset->uuid) ?></th>
+            </tr>
+            <?php if ($can_read && $user_has_key): ?>
+                <tr>
+                    <th>READ:</th>
+                    <td><div style="font-size: 0.85em;"><?= $this->escapeHtml($read_url) ?></div></th>
+                </tr>
+                <tr>
+                    <th>BROWSE:</th>
+                    <td><div style="font-size: 0.85em;"><?= $this->escapeHtml($browse_url) ?></div></th>
+                </tr>
+                <tr>
+                    <th>API Explorer:</th>
+                    <td><div style="font-size: 0.85em;"><a href="<?= $this->escapeHtml($api_home) ?>" target="_blank"><?= $this->escapeHtml($api_home) ?></a></div></th>
+                </tr>
+            <?php endif; ?>
+            <tr>
+                <th>Total docs:</th>
+                <td><?= $this->escapeHtml($doc_count) ?></td>
+            </tr>
+        </table>
+
+        <?php
+
+            if ($can_read && $user_has_key) {
+                print('You are subscribed to this Stream API. ');
+            }
+
+        ?>
+        </p>
+
+    </div>
+</div>
+
+

@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Stream inactive</h5>
+        <h6 class="card-subtitle mb-2 text-muted">This Stream API has not yet been activated</h6>
+
+        <?php if($can_edit): ?>
+            <p class="card-text">In order to use this data stream, please select a key from the list below to
+                associate with the API. This key will have both read and write permissions. If you wish to first create a
+                new key, please visit your keys page.</p>
+
+            <form action="<?= $this->url( 'stream', ['id'=>$dataset->id, 'action'=>'activate'],[]); ?>" method="post" id="activate-form" name="activate-form">
+                <div class="form-group">
+                    <label for="api-key">Select key:</label>
+                    <select class="form-control" id="api-key" name="api-key">
+                        <?php foreach ($keys as $key): ?>
+                            <option value="<?= $key->uuid ?>"><?= $key->name.' - '.substr($key->description, 0,50)?> </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <br />
+                    <button type="submit" class="btn btn-primary">Activate</button>
+                </div>
+            </form>
+        <?php endif; ?>
+
+
+
+    </div>
+</div>
+
+
