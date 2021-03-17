@@ -7,7 +7,7 @@ use MKDF\Datasets\Repository\MKDFDatasetRepositoryInterface;
 use MKDF\Datasets\Service\DatasetsFeatureInterface;
 use MKDF\Stream\Repository\MKDFStreamRepositoryInterface;
 
-class StreamFeature implements DatasetsFeatureInterface
+class SparqlFeature implements DatasetsFeatureInterface
 {
     private $active = false;
 
@@ -21,21 +21,21 @@ class StreamFeature implements DatasetsFeatureInterface
     }
 
     public function getController() {
-        return \MKDF\Stream\Controller\StreamController::class;
+        return \MKDF\Sparql\Controller\SparqlController::class;
     }
     public function getViewAction(){
-        return 'details';
+        return 'query';
     }
     public function getEditAction(){
-        return 'index';
+        return 'query';
     }
 
     public function getViewHref($id){
-        return '/dataset/stream/details/'.$id;
+        return '/dataset/sparql/query/'.$id;
     }
 
     public function getEditHref($id){
-        return '/dataset/stream/details/'.$id;
+        return '/dataset/sparql/query/'.$id;
     }
 
     public function hasFeature($id){
@@ -50,7 +50,7 @@ class StreamFeature implements DatasetsFeatureInterface
     }
 
     public function getLabel(){
-        return '<i class="fas fa-satellite-dish"></i> API';
+        return '<i class="fas fa-project-diagram"></i> SPARQL';
     }
 
     public function isActive(){

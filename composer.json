@@ -3,10 +3,6 @@
   "description": "MKDF SPARQL interface",
   "type": "library",
   "require": {
-    "zendframework/zend-mvc": "^3.0.1",
-    "zendframework/zend-cache": "^2.7.1",
-    "zendframework/zend-db": "^2.8.1",
-    "zendframework/zend-mvc-form": "^1.0",
     "mkdf/mkdf-core": "master",
     "mkdf/mkdf-datasets": "master",
     "mkdf/mkdf-keys": "master",
