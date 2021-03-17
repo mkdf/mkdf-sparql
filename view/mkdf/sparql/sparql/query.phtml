@@ -27,7 +27,7 @@
             UUID: <?= $dataset->uuid ?><br />
             -->
 
-            <?php if($stream_exists): ?>
+
                 <?= $this->partial('mkdf/sparql/partial/query-interface', [
                     'stream_url'    => $stream_url,
                     'read_url'	=> $read_url,
@@ -39,11 +39,9 @@
                     'can_read'      => $can_read,
                     'user_has_key'  => $user_has_key
                 ] ) ?>
-            <?php endif; ?>
 
-            <?php if(!$stream_exists): ?>
-                <?= $this->partial('mkdf/stream/partial/stream-inactive', ['dataset' => $dataset, 'keys' => $keys, 'can_edit' => $can_edit] ) ?>
-            <?php endif; ?>
+
+
         </div>
     </div>
 </div>
