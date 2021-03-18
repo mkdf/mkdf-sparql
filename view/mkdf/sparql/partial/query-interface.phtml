@@ -29,13 +29,14 @@
             </tr>
         </table>
 
-        <?php
+        <?php if ($can_read && $user_has_key):  ?>
 
-            if ($can_read && $user_has_key) {
-                print('You are subscribed to this Stream API. ');
-            }
+            <div id="yasgui"></div>
+            <script>
+                const yasgui = new Yasgui(document.getElementById("yasgui"));
+            </script>
 
-        ?>
+        <?php endif; ?>
         </p>
 
     </div>
