@@ -5,7 +5,6 @@
             <?= $this->partial('mkdf/datasets/partial/dataset-features', ['features' => $features, 'dataset_id' => $dataset->id] ) ?>
         </div>
         <div class="col-md-9">
-            <h2>API SPARQL Interface</h2>
             <?php
             if ($can_read && !$user_has_key && $stream_exists){
                 //Add subscribe button

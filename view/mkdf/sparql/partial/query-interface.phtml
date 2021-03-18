@@ -1,40 +1,33 @@
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">SPARQL Interface</h5>
-        <h6 class="card-subtitle mb-2 text-muted">This Stream API is active and ready for SPARQL queriess</h6>
+        <h5 class="card-title">Dataset SPARQL Interface</h5>
         <p class="card-text">
+            Total items in dataset: <?= $this->escapeHtml($doc_count) ?>
 
-        <table class="table table-bordered">
-            <tr>
-                <th>UUID:</th>
-                <td><?= $this->escapeHtml($dataset->uuid) ?></th>
-            </tr>
-            <?php if ($can_read && $user_has_key): ?>
-                <tr>
-                    <th>READ:</th>
-                    <td><div style="font-size: 0.85em;"><?= $this->escapeHtml($read_url) ?></div></th>
-                </tr>
-                <tr>
-                    <th>BROWSE:</th>
-                    <td><div style="font-size: 0.85em;"><?= $this->escapeHtml($browse_url) ?></div></th>
-                </tr>
-                <tr>
-                    <th>API Explorer:</th>
-                    <td><div style="font-size: 0.85em;"><a href="<?= $this->escapeHtml($api_home) ?>" target="_blank"><?= $this->escapeHtml($api_home) ?></a></div></th>
-                </tr>
-            <?php endif; ?>
-            <tr>
-                <th>Total docs:</th>
-                <td><?= $this->escapeHtml($doc_count) ?></td>
-            </tr>
-        </table>
+
 
         <?php if ($can_read && $user_has_key):  ?>
 
             <div id="yasgui"></div>
             <script>
-                const yasgui = new Yasgui(document.getElementById("yasgui"));
+                var yasqe = YASQE(document.getElementById("yasgui"));
             </script>
+
+        <form>
+            <div class="form-group">
+                <label for="queryKey">Select a key to use for this query</label>
+                <select class="custom-select custom-select-sm" id="queryKey">
+                    <option selected>Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary"><i class="fas fa-play"></i> Go</button>
+        </form>
+
+
 
         <?php endif; ?>
         </p>
