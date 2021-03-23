@@ -47,7 +47,6 @@ class SparqlController extends AbstractActionController
         $userHasKey = $this->_keys_repository->userHasDatasetKey($user_id,$dataset->id);
         if ($can_view && $can_read && $userHasKey) {
             $docCount = 0;
-            $keys = [];
             if ($streamExists) {
                 $docCount = $this->_repository->getDocCount($dataset->uuid)['totalDocs'];
             }
@@ -61,6 +60,7 @@ class SparqlController extends AbstractActionController
                 'buttons' => [
                 ]
             ];
+            $keys = $this->_keys_repository->userDatasetKeys($user_id,$dataset->id);
             return new ViewModel([
                 'message' => $message,
                 'doc_count' => $docCount,

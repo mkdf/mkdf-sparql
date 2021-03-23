@@ -13,26 +13,128 @@
                 var yasqe = YASQE(document.getElementById("yasgui"));
             </script>
 
-        <form>
-            <div class="form-group">
-                <label for="queryKey">Select a key to use for this query</label>
-                <select class="custom-select custom-select-sm" id="queryKey">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+
+        <form id="sparqlForm">
+            <div class="row">
+                <div class="col-md-6"><label for="queryKey">Select a key to use for this query</label><br /></div>
+                <div class="col-md-4"> <label for="resultsFormat">Results format</label><br /></div>
+                <div class="col-md-2">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+
+                    <select class="custom-select custom-select-sm" id="queryKey">
+                        <?php
+                            foreach ($keys as $key) {
+                                echo ("<option value='".$key['keyUUID']."'>".$key['keyName']." [".$key['keyUUID']."]</option>");
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+
+                    <select class="custom-select custom-select-sm" id="resultsFormat">
+                        <option value="application/sparql-results+json">JSON</option>
+                        <option value="application/sparql-results+xml">XML</option>
+                        <option value="text/csv">Comma separated values</option>
+                        <option value="text/tab-separated-values">Tab separated values</option>
+                    </select>
+                </div>
+                <div class="col-md-2 align-baseline">
+                    <button type="submit" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Go</button>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-primary"><i class="fas fa-play"></i> Go</button>
+
         </form>
-
-
 
         <?php endif; ?>
         </p>
+        <div id="errorBox" class="alert alert-danger" role="alert">
+            Error
+        </div>
+
+
+    <div id="yasr"></div>
+    <script>
+        var yasr = YASR(document.getElementById("yasr"),{
+            outputPlugins: ["error", "boolean", "rawResponse", "table", "leaflet"],
+            useGoogleCharts: false,
+            persistency: false
+        });
+    </script>
+
 
     </div>
+
 </div>
+
+<script>
+    $( document ).ready(function() {
+        $("#errorBox").hide();
+    });
+
+
+    $('#sparqlForm').on('submit', function(e) {
+        e.preventDefault();
+        e.stopPropagation(); // only neccessary if something above is listening to the (default-)event too
+
+        //var query = "SELECT * WHERE { ?sub ?pred ?obj .} LIMIT 10";
+        var query = yasqe.getValue();
+        var data = {
+            'query': query
+        };
+        var key = $("#queryKey").val();
+
+        var resultsFormat = $( "#resultsFormat" ).val();
+
+        var ajaxCall = $.ajax
+        ({
+            type: "GET",
+            url: "https://api2.mksmart.org/query/e07a0a24-1179-40a0-9138-d229d0d2157c/sparql",
+            dataType: 'text',
+            headers: {
+                Accept: resultsFormat
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader ("Authorization", "Basic " + btoa(key + ":" + key));
+            },
+            data: data,
+            success: function (){
+                //alert('Thanks for your comment!');
+            }
+        });
+
+        ajaxCall.done(function(text) {
+            $("#errorBox").hide();
+            yasr.setResponse({
+                response: text,
+                contentType: resultsFormat
+            });
+
+            // Draw results with current plugin
+            yasr.draw()
+        });
+        ajaxCall.fail(function(response) {
+            var error;
+            switch(response.status) {
+                case 400:
+                    error = "Error: Invalid SPARQL query";
+                    break;
+                case 401:
+                    error = "Authentication error: There is a problem with your key";
+                    break;
+                default:
+                    error = "An undefined error occurred while executing your SPARQL query";
+            }
+            $("#errorBox").html(error);
+            $("#errorBox").show();
+        });
+        ajaxCall.always(function() {
+            //alert( "second complete" );
+        });
+    });
+
+</script>
 
 

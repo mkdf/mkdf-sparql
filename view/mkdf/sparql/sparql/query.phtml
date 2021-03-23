@@ -20,8 +20,9 @@
                 ];
             }
             ?>
-
+            <!--
             <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
+            -->
             <!--
             UUID: <?= $dataset->uuid ?><br />
             -->
@@ -36,7 +37,8 @@
                     'doc_count'     => $doc_count,
                     'dataset'       => $dataset,
                     'can_read'      => $can_read,
-                    'user_has_key'  => $user_has_key
+                    'user_has_key'  => $user_has_key,
+                    'keys'          => $keys
                 ] ) ?>
 
 
