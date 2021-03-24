@@ -38,7 +38,7 @@ return [
     ],
     'view_manager' => [
         'template_path_stack' => [
-            'Stream' => __DIR__ . '/../view',
+            'Sparql' => __DIR__ . '/../view',
         ],
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
