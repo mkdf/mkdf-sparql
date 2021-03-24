@@ -3,17 +3,10 @@
         <h5 class="card-title">Dataset SPARQL Interface</h5>
         <p class="card-text">
             Total items in dataset: <?= $this->escapeHtml($doc_count) ?>
-
-
-
-
-
             <div id="yasgui"></div>
             <script>
                 var yasqe = YASQE(document.getElementById("yasgui"));
             </script>
-
-
         <form id="sparqlForm">
             <div class="row">
                 <div class="col-md-6"><label for="queryKey">Select a key to use for this query</label><br /></div>
@@ -44,11 +37,7 @@
                     <button type="submit" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Go</button>
                 </div>
             </div>
-
-
         </form>
-
-
         </p>
         <div id="queryRunning" class="alert alert-primary" role="alert">
             Query running...
@@ -56,8 +45,6 @@
         <div id="errorBox" class="alert alert-danger" role="alert">
             Error
         </div>
-
-
     <div id="yasr"></div>
     <script>
         var yasr = YASR(document.getElementById("yasr"),{
@@ -66,10 +53,7 @@
             persistency: false
         });
     </script>
-
-
     </div>
-
 </div>
 
 <script>
@@ -77,7 +61,6 @@
         $("#errorBox").hide();
         $("#queryRunning").hide();
     });
-
 
     $('#sparqlForm').on('submit', function(e) {
         e.preventDefault();
