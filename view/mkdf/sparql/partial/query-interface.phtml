@@ -135,7 +135,7 @@
                     error = "Graph database not found. This dataset may not yet be enabled for SPARQL queries";
                     break;
                 default:
-                    error = "An undefined error occurred while executing your SPARQL query";
+                    error = "An error occurred. This dataset may not yet be enabled for SPARQL queries";
             }
             $("#errorBox").html(error);
             $("#errorBox").show();
