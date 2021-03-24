@@ -103,7 +103,6 @@
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader ("Authorization", "Basic " + btoa(key + ":" + key));
-                //xhr.setRequestHeader ("Authorization", "Basic " + btoa('24cfbb32-94da-4aac-9a86-9f280c7dcbcb' + ":" + '24cfbb32-94da-4aac-9a86-9f280c7dcbcb'));
             },
             data: data,
             success: function (){
