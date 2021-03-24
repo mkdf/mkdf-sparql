@@ -131,6 +131,9 @@
                 case 401:
                     error = "Authentication error: There is a problem with your key";
                     break;
+                case 404:
+                    error = "Graph database not found. This dataset may not yet be enabled for SPARQL queries";
+                    break;
                 default:
                     error = "An undefined error occurred while executing your SPARQL query";
             }
