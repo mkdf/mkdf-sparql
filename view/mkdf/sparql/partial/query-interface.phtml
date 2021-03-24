@@ -86,7 +86,6 @@
         $("#errorBox").hide();
         $("#queryRunning").show();
 
-        //var query = "SELECT * WHERE { ?sub ?pred ?obj .} LIMIT 10";
         var query = yasqe.getValue();
         var data = {
             'query': query
@@ -106,7 +105,7 @@
             },
             data: data,
             success: function (){
-                //alert('Thanks for your comment!');
+                //handled below
             }
         });
 
@@ -141,7 +140,7 @@
             $("#errorBox").show();
         });
         ajaxCall.always(function() {
-            //alert( "second complete" );
+            //this always runs when ajax complete regardless of the result
         });
     });
 
