@@ -81,7 +81,7 @@ class SparqlController extends AbstractActionController
         }
         else{
             $this->flashMessenger()->addErrorMessage('You do not have a read key on this dataset');
-            return $this->redirect()->toRoute('dataset', ['action'=>'index']);
+            return $this->redirect()->toRoute('dataset', ['action'=>'details', 'id'=>$dataset->id]);
         }
     }
 
