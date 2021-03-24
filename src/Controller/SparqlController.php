@@ -76,6 +76,7 @@ class SparqlController extends AbstractActionController
                 'can_edit' => $can_edit,
                 'can_read' => $can_read,
                 'user_has_key' => $userHasKey,
+
             ]);
         }
         else{

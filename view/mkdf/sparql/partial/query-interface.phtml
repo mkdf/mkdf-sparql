@@ -6,7 +6,7 @@
 
 
 
-        <?php if ($can_read && $user_has_key):  ?>
+
 
             <div id="yasgui"></div>
             <script>
@@ -48,8 +48,11 @@
 
         </form>
 
-        <?php endif; ?>
+
         </p>
+        <div id="queryRunning" class="alert alert-primary" role="alert">
+            Query running...
+        </div>
         <div id="errorBox" class="alert alert-danger" role="alert">
             Error
         </div>
@@ -72,6 +75,7 @@
 <script>
     $( document ).ready(function() {
         $("#errorBox").hide();
+        $("#queryRunning").hide();
     });
 
 
@@ -79,25 +83,27 @@
         e.preventDefault();
         e.stopPropagation(); // only neccessary if something above is listening to the (default-)event too
 
+        $("#errorBox").hide();
+        $("#queryRunning").show();
+
         //var query = "SELECT * WHERE { ?sub ?pred ?obj .} LIMIT 10";
         var query = yasqe.getValue();
         var data = {
             'query': query
         };
         var key = $("#queryKey").val();
-
         var resultsFormat = $( "#resultsFormat" ).val();
-
         var ajaxCall = $.ajax
         ({
             type: "GET",
-            url: "https://api2.mksmart.org/query/e07a0a24-1179-40a0-9138-d229d0d2157c/sparql",
+            url: "<?= $api_home ?>" +  "/query/" + "<?= $dataset->uuid ?>" + "/sparql",
             dataType: 'text',
             headers: {
                 Accept: resultsFormat
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader ("Authorization", "Basic " + btoa(key + ":" + key));
+                //xhr.setRequestHeader ("Authorization", "Basic " + btoa('24cfbb32-94da-4aac-9a86-9f280c7dcbcb' + ":" + '24cfbb32-94da-4aac-9a86-9f280c7dcbcb'));
             },
             data: data,
             success: function (){
@@ -106,6 +112,7 @@
         });
 
         ajaxCall.done(function(text) {
+            $("#queryRunning").hide();
             $("#errorBox").hide();
             yasr.setResponse({
                 response: text,
@@ -116,6 +123,7 @@
             yasr.draw()
         });
         ajaxCall.fail(function(response) {
+            $("#queryRunning").hide();
             var error;
             switch(response.status) {
                 case 400:
