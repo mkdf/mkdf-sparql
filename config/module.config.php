@@ -8,14 +8,15 @@ use Zend\Router\Http\Segment;
 return [
     'controllers' => [
         'factories' => [
-            Controller\SparqlController::class => Controller\Factory\SparqlControllerFactory::class
+            Controller\SparqlController::class => Controller\Factory\SparqlControllerFactory::class,
+            Controller\JobsController::class => Controller\Factory\JobsControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'aliases' => [
         ],
         'factories' => [
-            Feature\SparqlFeature::class => Feature\Factory\SparqlFeatureFactory::class
+            Feature\SparqlFeature::class => Feature\Factory\SparqlFeatureFactory::class,
         ]
     ],
     'router' => [
@@ -34,11 +35,26 @@ return [
                     ],
                 ],
             ],
+            'rdfjobs' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/dataset/rdfjobs/:action/:id',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\JobsController::class,
+                        'action' => 'list'
+                    ],
+                ],
+            ],
         ],
+
     ],
     'view_manager' => [
         'template_path_stack' => [
-            'Sparql' => __DIR__ . '/../view',
+            'Sparql' => __DIR__ . '/../view'
         ],
     ],
     // The 'access_filter' key is used by the User module to restrict or permit

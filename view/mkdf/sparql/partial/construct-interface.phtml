@@ -1,0 +1,24 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">SPARQL - Construct graph</h5>
+        <p class="card-text">
+            <!-- Total items in dataset: <?= $this->escapeHtml($doc_count) ?> -->
+        <div id="yasgui-construct"></div>
+        <script>
+            var yasqe2 = YASQE(document.getElementById("yasgui-construct"));
+        </script>
+        <form id="constructForm">
+
+            <div class="row">
+                <div class="col-md-2 align-baseline p-2">
+                    <button type="submit" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Go</button>
+                </div>
+            </div>
+        </form>
+        </p>
+    </div>
+</div>
+
+
+
+<?php

@@ -1,0 +1,50 @@
+<h1><?= $dataset->title ?></h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->partial('mkdf/datasets/partial/dataset-features', ['features' => $features, 'dataset_id' => $dataset->id] ) ?>
+        </div>
+        <div class="col-md-9">
+            <!--
+            <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
+            -->
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'sparql', ['id'=>$dataset->id, 'action'=>'query'], [] ); ?>">
+                        Query</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'create'], [] ); ?>">Construct</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-light" href="">Job list</a>
+                </li>
+            </ul>
+
+            <!--
+            <ul class="nav nav-tabs" >
+                <li class="nav-item active"><a href="#" >Query</a></li>
+                <li class="nav-item"><a href="status.html" >Jobs</a></li>
+                <li class="nav-item"><a href="settings.html" >Management</a></li>
+            </ul>
+            -->
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    Job list here
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+

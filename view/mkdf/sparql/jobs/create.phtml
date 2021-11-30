@@ -8,16 +8,14 @@
             <!--
             <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
             -->
-            <!--
-            UUID: <?= $dataset->uuid ?><br />
-            -->
 
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link btn-light" href="">Query</a>
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'sparql', ['id'=>$dataset->id, 'action'=>'query'], [] ); ?>">
+                        Query</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'create'], [] ); ?>">Construct</a>
+                    <a class="nav-link btn-light" href="">Construct</a>
                 </li>
                 <li class="nav-item" role="presentation">
                     <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'list'], [] ); ?>">Job list</a>
@@ -34,20 +32,6 @@
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <?= $this->partial('mkdf/sparql/partial/query-interface', [
-                        'stream_url'    => $stream_url,
-                        'read_url'	    => $read_url,
-                        'write_url'	    => $write_url,
-                        'browse_url'	=> $browse_url,
-                        'api_home'	    => $api_home,
-                        'doc_count'     => $doc_count,
-                        'dataset'       => $dataset,
-                        'can_read'      => $can_read,
-                        'user_has_key'  => $user_has_key,
-                        'keys'          => $keys
-                    ] ) ?>
-                </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <?= $this->partial('mkdf/sparql/partial/construct-interface', [
                         'stream_url'    => $stream_url,
                         'read_url'	    => $read_url,
@@ -61,7 +45,7 @@
                         'keys'          => $keys
                     ] ) ?>
                 </div>
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Management</div>
+
             </div>
 
 
