@@ -32,28 +32,57 @@
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <?= $this->partial('mkdf/sparql/partial/construct-interface', [
-                        'stream_url'    => $stream_url,
-                        'read_url'	    => $read_url,
-                        'write_url'	    => $write_url,
-                        'browse_url'	=> $browse_url,
-                        'api_home'	    => $api_home,
-                        'doc_count'     => $doc_count,
-                        'dataset'       => $dataset,
-                        'can_read'      => $can_read,
-                        'user_has_key'  => $user_has_key,
-                        'keys'          => $keys
-                    ] ) ?>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">SPARQL - Construct graph</h5>
+
+                            <form name="addConstructForm"
+                                  id="addConstructForm"
+                                  method="POST"
+                                  action="<?=$this->url( 'rdfjobs', ['action' => 'create', 'id' => $dataset->id]); ?>">
+
+                                <div id="yasgui-construct"></div>
+                                <script>
+                                    var yasqe2 = YASQE(document.getElementById("yasgui-construct"));
+                                </script>
+
+                                <!-- *** User doesn't need to be concerned with this ***
+                                <label for="namespace">Target namespace</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="namespace" id="namespace" placeholder="Target namespace">
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
+
+                                <label for="graphName">Target graph name</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="graphName" id="graphName" placeholder="target graph name...">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Go</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
-
-
-
-
-
-
-
 
         </div>
     </div>
