@@ -50,25 +50,37 @@ class JobsController extends AbstractActionController
                 $this->flashMessenger()->addErrorMessage('Data API not yet activated');
                 return $this->redirect()->toRoute('stream', ['action'=>'details']);
             }
+
             $actions = [
                 'label' => 'Actions',
                 'class' => '',
                 'buttons' => [
                 ]
             ];
-            $keys = $this->_keys_repository->userDatasetKeys($user_id,$dataset->id);
-            return new ViewModel([
-                'message' => $message,
-                'keys' => $keys,
-                'dataset' => $dataset,
-                'features' => $this->datasetsFeatureManager()->getFeatures($id),
-                'actions' => $actions,
-                'can_edit' => $can_edit,
-                'can_read' => $can_read,
-                'can_edit' => $can_edit,
-                'user_has_key' => $userHasKey,
 
-            ]);
+            if($this->getRequest()->isPost()) {
+                $data = $this->params()->fromPost();
+                $this->flashMessenger()->addErrorMessage('The CONSTRUCT job was added successfully.');
+                return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
+            }
+            else {
+                $keys = $this->_keys_repository->userDatasetKeys($user_id,$dataset->id);
+                return new ViewModel([
+                    'message' => $message,
+                    'keys' => $keys,
+                    'dataset' => $dataset,
+                    'features' => $this->datasetsFeatureManager()->getFeatures($id),
+                    'actions' => $actions,
+                    'can_edit' => $can_edit,
+                    'can_read' => $can_read,
+                    'can_edit' => $can_edit,
+                    'user_has_key' => $userHasKey,
+
+                ]);
+            }
+
+
+
         }
         else{
             $this->flashMessenger()->addErrorMessage('You do not have the required permissions on this dataset');

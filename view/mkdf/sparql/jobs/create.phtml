@@ -46,6 +46,7 @@
                                 <script>
                                     var yasqe2 = YASQE(document.getElementById("yasgui-construct"));
                                 </script>
+                                <input type="hidden" name="query" id="query" value="">
 
                                 <!-- *** User doesn't need to be concerned with this ***
                                 <label for="namespace">Target namespace</label>
@@ -67,13 +68,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Go</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <button id="goButton" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Go</button>
 
                             </form>
 
@@ -87,4 +82,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("#goButton").on("click", function () {
+            var query = yasqe2.getValue();
+            $('#query').val(query);
+            $("#addConstructForm").submit();
+            e.preventDefault();
+        });
+    });
+</script>
+
 
