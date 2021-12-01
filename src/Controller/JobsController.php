@@ -60,6 +60,22 @@ class JobsController extends AbstractActionController
 
             if($this->getRequest()->isPost()) {
                 $data = $this->params()->fromPost();
+                $newDoc = [
+                    'dataset'   => $dataset->uuid,
+                    'job-type'  => 'CONSTRUCT',
+                    'query'     => $data['query'],
+                    'target-namespace'  => 'namespace-test',
+                    'target-named-graph' => $data['graphName'],
+                    'status'    => 'PENDING',
+                    'message'   => '',
+                    'history'   => [],
+                    'scheduled' => '1234567890',
+                    'submitted-by'  => 'jase',
+                    'modified'  => 'jase'
+                ];
+                $newDocJSON = json_encode($newDoc);
+                $this->pushCreateJob($newDocJSON);
+
                 $this->flashMessenger()->addErrorMessage('The CONSTRUCT job was added successfully.');
                 return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
             }
@@ -135,6 +151,16 @@ class JobsController extends AbstractActionController
             $this->flashMessenger()->addErrorMessage('You do not have the required permissions on this dataset');
             return $this->redirect()->toRoute('dataset', ['action'=>'details', 'id'=>$dataset->id]);
         }
+    }
+
+    private function pushCreateJob($data) {
+        $jobsDataset = $this->_config['mkdf-sparql']['rdfjobs-dataset'];
+        $jobsKey = $this->_config['mkdf-sparql']['rdfjobs-key'];
+        $jobsDatasetExists = $this->_repository->getStreamExists($jobsDataset);
+        if (!$jobsDatasetExists) {
+            $this->_repository->createDataset($jobsDataset,$jobsKey);
+        }
+        $this->_repository->pushDocument ($jobsDataset,$data);
     }
 
 }
