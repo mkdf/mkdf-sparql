@@ -134,6 +134,10 @@ class JobsController extends AbstractActionController
                 ]
             ];
             $keys = $this->_keys_repository->userDatasetKeys($user_id,$dataset->id);
+
+            $jobsJSON = $this->getRDFJobs($dataset->uuid);
+            $jobs = json_decode($jobsJSON);
+
             return new ViewModel([
                 'message' => $message,
                 'keys' => $keys,
@@ -144,13 +148,26 @@ class JobsController extends AbstractActionController
                 'can_read' => $can_read,
                 'can_edit' => $can_edit,
                 'user_has_key' => $userHasKey,
-
+                'jobs'  => $jobs,
             ]);
         }
         else{
+            //FIXME - This message is not being shown - check the message/error rendering section on the next page
             $this->flashMessenger()->addErrorMessage('You do not have the required permissions on this dataset');
             return $this->redirect()->toRoute('dataset', ['action'=>'details', 'id'=>$dataset->id]);
         }
+    }
+
+    private function getRDFJobs($datasetUuid) {
+        $jobsDataset = $this->_config['mkdf-sparql']['rdfjobs-dataset'];
+        $jobsKey = $this->_config['mkdf-sparql']['rdfjobs-key'];
+        $jobsDatasetExists = $this->_repository->getStreamExists($jobsDataset);
+        if (!$jobsDatasetExists) {
+            $this->_repository->createDataset($jobsDataset,$jobsKey);
+        }
+        $query = ['dataset' => $datasetUuid];
+        $queryJSON = json_encode($query);
+        return $this->_repository->getDocuments($jobsDataset,100,$jobsKey,$queryJSON);
     }
 
     private function pushCreateJob($data) {
@@ -160,7 +177,7 @@ class JobsController extends AbstractActionController
         if (!$jobsDatasetExists) {
             $this->_repository->createDataset($jobsDataset,$jobsKey);
         }
-        $this->_repository->pushDocument ($jobsDataset,$data);
+        $this->_repository->pushDocument ($jobsDataset,$data,$jobsKey);
     }
 
 }
