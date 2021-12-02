@@ -36,15 +36,17 @@
                     <table class="table table-bordered">
                         <tr class="table-active">
                             <th>Time</th>
-                            <th>Query</th>
+                            <th>Job type</th>
+                            <th>Target graph</th>
                             <th>Status</th>
 
                         </tr>
                         <?php foreach ($jobs as $job) : ?>
                             <tr>
                                 <td><?= $job->_timestamp ?></td>
-                                <td><?=$job->query ?></td>
-                                <td><?=$job->status ?></td>
+                                <td><?= $job->{'job-type'} ?></td>
+                                <td><?= $job->{'target-named-graph'} ?></td>
+                                <td><?= $job->status ?></td>
                             </tr>
 
                         <?php endforeach; ?>
