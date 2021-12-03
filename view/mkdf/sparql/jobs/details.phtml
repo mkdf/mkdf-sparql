@@ -22,21 +22,54 @@
                 </li>
             </ul>
 
-            <!--
-            <ul class="nav nav-tabs" >
-                <li class="nav-item active"><a href="#" >Query</a></li>
-                <li class="nav-item"><a href="status.html" >Jobs</a></li>
-                <li class="nav-item"><a href="settings.html" >Management</a></li>
-            </ul>
-            -->
-
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">SPARQL - Job details</h5>
-                            <p>Some details here</p>
+
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>Created</td>
+                                    <td><?= date('Y-m-d - H:i',$job->_timestamp) ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td><?= $job->{'job-type'} ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Target graph</td>
+                                    <td><?= $job->{'target-named-graph'} ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Query</td>
+                                    <td><?= $job->query ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td><?= $job->status ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Submitted by</td>
+                                    <td><?= $job->{'submitted-by'} ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Last message</td>
+                                    <td><?= $job->message ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Message history</td>
+                                    <td>
+                                        <ul>
+                                        <?php foreach ($jobs->history as $item) : ?>
+                                            <li><?= $item ?></li>
+                                        <?php endforeach; ?>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
 
                             <a href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'list'], [] ); ?>">
                                 <i class="fas fa-undo"></i> Return to job list

@@ -107,6 +107,7 @@ class JobsController extends AbstractActionController
     public function DetailsAction() {
         $user_id = $this->currentUser()->getId();
         $id = (int) $this->params()->fromRoute('id', 0);
+        $jobId = $this->params()->fromQuery('jobid','');
         $dataset = $this->_dataset_repository->findDataset($id);
         //$permissions = $this->_repository->findDatasetPermissions($id);
         $message = "Dataset: " . $id;
@@ -114,7 +115,16 @@ class JobsController extends AbstractActionController
         $can_view = $this->_permissionManager->canView($dataset,$user_id);
         $can_read = $this->_permissionManager->canRead($dataset,$user_id);
         $can_edit = $this->_permissionManager->canEdit($dataset,$user_id);
+        $streamExists = $this->_repository->getStreamExists($dataset->uuid);
         if ($can_view && $can_read && $can_edit) {
+            if (!$streamExists) {
+                $this->flashMessenger()->addErrorMessage('Data API not yet activated');
+                return $this->redirect()->toRoute('stream', ['action'=>'details']);
+            }
+
+            $jobJSON = $this->getRDFJob($dataset->uuid, $jobId);
+            $job = json_decode($jobJSON);
+
             return new ViewModel([
                 'message' => $message,
                 'dataset' => $dataset,
@@ -123,6 +133,7 @@ class JobsController extends AbstractActionController
                 'can_edit' => $can_edit,
                 'can_read' => $can_read,
                 'can_edit' => $can_edit,
+                'job'       => $job[0]
             ]);
         }
         else{
@@ -190,6 +201,21 @@ class JobsController extends AbstractActionController
             $this->_repository->createDataset($jobsDataset,$jobsKey);
         }
         $query = ['dataset' => $datasetUuid];
+        $queryJSON = json_encode($query);
+        return $this->_repository->getDocuments($jobsDataset,100,$jobsKey,$queryJSON);
+    }
+
+    private function getRDFJob($datasetUuid, $jobId) {
+        $jobsDataset = $this->_config['mkdf-sparql']['rdfjobs-dataset'];
+        $jobsKey = $this->_config['mkdf-sparql']['rdfjobs-key'];
+        $jobsDatasetExists = $this->_repository->getStreamExists($jobsDataset);
+        if (!$jobsDatasetExists) {
+            $this->_repository->createDataset($jobsDataset,$jobsKey);
+        }
+        $query = [
+            'dataset'   => $datasetUuid,
+            '_id'       => $jobId
+        ];
         $queryJSON = json_encode($query);
         return $this->_repository->getDocuments($jobsDataset,100,$jobsKey,$queryJSON);
     }
