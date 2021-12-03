@@ -47,7 +47,7 @@ class JobsController extends AbstractActionController
         $userHasKey = $this->_keys_repository->userHasDatasetKey($user_id,$dataset->id);
         if ($can_view && $can_read && $can_edit && $userHasKey) {
             if (!$streamExists) {
-                $this->flashMessenger()->addErrorMessage('Data API not yet activated');
+                $this->flashMessenger()->addMessage('Data API not yet activated');
                 return $this->redirect()->toRoute('stream', ['action'=>'details']);
             }
 
@@ -76,7 +76,7 @@ class JobsController extends AbstractActionController
                 $newDocJSON = json_encode($newDoc);
                 $this->pushCreateJob($newDocJSON);
 
-                $this->flashMessenger()->addErrorMessage('The CONSTRUCT job was added successfully.');
+                $this->flashMessenger()->addMessage('The CONSTRUCT job was added successfully.');
                 return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
             }
             else {
@@ -99,12 +99,21 @@ class JobsController extends AbstractActionController
 
         }
         else{
-            $this->flashMessenger()->addErrorMessage('You do not have the required permissions on this dataset');
+            $this->flashMessenger()->addMessage('You do not have the required permissions on this dataset');
             return $this->redirect()->toRoute('dataset', ['action'=>'details', 'id'=>$dataset->id]);
         }
     }
 
-    public function DetailsAction() {
+    public function detailsAction() {
+        $messages = [];
+        if ($this->flashMessenger->hasMessages()) {
+            foreach($this->flashMessenger->getMessages() as $flashMessage) {
+                $messages[] = [
+                    'type' => 'warning',
+                    'message' => $flashMessage
+                ];
+            }
+        }
         $user_id = $this->currentUser()->getId();
         $id = (int) $this->params()->fromRoute('id', 0);
         $jobId = $this->params()->fromQuery('jobid','');
@@ -118,7 +127,7 @@ class JobsController extends AbstractActionController
         $streamExists = $this->_repository->getStreamExists($dataset->uuid);
         if ($can_view && $can_read && $can_edit) {
             if (!$streamExists) {
-                $this->flashMessenger()->addErrorMessage('Data API not yet activated');
+                $this->flashMessenger()->addMessage('Data API not yet activated');
                 return $this->redirect()->toRoute('stream', ['action'=>'details']);
             }
 
@@ -126,7 +135,7 @@ class JobsController extends AbstractActionController
             $job = json_decode($jobJSON);
 
             return new ViewModel([
-                'message' => $message,
+                'messages' => $messages,
                 'dataset' => $dataset,
                 'features' => $this->datasetsFeatureManager()->getFeatures($id),
                 'actions' => $actions,
@@ -137,13 +146,22 @@ class JobsController extends AbstractActionController
             ]);
         }
         else{
-            //FIXME - This message is not being shown - check the message/error rendering section on the next page
-            $this->flashMessenger()->addErrorMessage('You do not have the required permissions on this dataset');
+            $this->flashMessenger()->addMessage('You do not have the required permissions on this dataset');
             return $this->redirect()->toRoute('dataset', ['action'=>'details', 'id'=>$dataset->id]);
         }
     }
 
-    public function ListAction() {
+    public function listAction() {
+        $messages = [];
+        $flashMessenger = $this->flashMessenger();
+        if ($flashMessenger->hasMessages()) {
+            foreach($flashMessenger->getMessages() as $flashMessage) {
+                $messages[] = [
+                    'type' => 'warning',
+                    'message' => $flashMessage
+                ];
+            }
+        }
         $user_id = $this->currentUser()->getId();
         $id = (int) $this->params()->fromRoute('id', 0);
         $dataset = $this->_dataset_repository->findDataset($id);
@@ -159,7 +177,7 @@ class JobsController extends AbstractActionController
         $userHasKey = $this->_keys_repository->userHasDatasetKey($user_id,$dataset->id);
         if ($can_view && $can_read && $can_edit && $userHasKey) {
             if (!$streamExists) {
-                $this->flashMessenger()->addErrorMessage('Data API not yet activated');
+                $this->flashMessenger()->addMessage('Data API not yet activated');
                 return $this->redirect()->toRoute('stream', ['action'=>'details']);
             }
             $actions = [
@@ -174,7 +192,7 @@ class JobsController extends AbstractActionController
             $jobs = json_decode($jobsJSON);
 
             return new ViewModel([
-                'message' => $message,
+                'messages' => $messages,
                 'keys' => $keys,
                 'dataset' => $dataset,
                 'features' => $this->datasetsFeatureManager()->getFeatures($id),
@@ -187,8 +205,7 @@ class JobsController extends AbstractActionController
             ]);
         }
         else{
-            //FIXME - This message is not being shown - check the message/error rendering section on the next page
-            $this->flashMessenger()->addErrorMessage('You do not have the required permissions on this dataset');
+            $this->flashMessenger()->addMessage('You do not have the required permissions on this dataset');
             return $this->redirect()->toRoute('dataset', ['action'=>'details', 'id'=>$dataset->id]);
         }
     }
