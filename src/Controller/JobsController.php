@@ -69,9 +69,9 @@ class JobsController extends AbstractActionController
                     'status'    => 'PENDING',
                     'message'   => '',
                     'history'   => [],
-                    'scheduled' => '1234567890',
-                    'submitted-by'  => 'jase',
-                    'modified'  => 'jase'
+                    'scheduled' => '0',
+                    'submitted-by'  => $this->identity(),
+                    'modified'  => $this->identity()
                 ];
                 $newDocJSON = json_encode($newDoc);
                 $this->pushCreateJob($newDocJSON);
@@ -105,7 +105,31 @@ class JobsController extends AbstractActionController
     }
 
     public function DetailsAction() {
-        return new ViewModel();
+        $user_id = $this->currentUser()->getId();
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $dataset = $this->_dataset_repository->findDataset($id);
+        //$permissions = $this->_repository->findDatasetPermissions($id);
+        $message = "Dataset: " . $id;
+        $actions = [];
+        $can_view = $this->_permissionManager->canView($dataset,$user_id);
+        $can_read = $this->_permissionManager->canRead($dataset,$user_id);
+        $can_edit = $this->_permissionManager->canEdit($dataset,$user_id);
+        if ($can_view && $can_read && $can_edit) {
+            return new ViewModel([
+                'message' => $message,
+                'dataset' => $dataset,
+                'features' => $this->datasetsFeatureManager()->getFeatures($id),
+                'actions' => $actions,
+                'can_edit' => $can_edit,
+                'can_read' => $can_read,
+                'can_edit' => $can_edit,
+            ]);
+        }
+        else{
+            //FIXME - This message is not being shown - check the message/error rendering section on the next page
+            $this->flashMessenger()->addErrorMessage('You do not have the required permissions on this dataset');
+            return $this->redirect()->toRoute('dataset', ['action'=>'details', 'id'=>$dataset->id]);
+        }
     }
 
     public function ListAction() {

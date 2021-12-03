@@ -33,25 +33,37 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-                    <table class="table table-bordered">
-                        <tr class="table-active">
-                            <th>Time</th>
-                            <th>Job type</th>
-                            <th>Target graph</th>
-                            <th>Status</th>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">SPARQL - Job list</h5>
+                            <table class="table table-bordered">
+                                <tr class="table-active">
+                                    <th>Time created</th>
+                                    <th>Job type</th>
+                                    <th>Target graph</th>
+                                    <th>Status</th>
 
-                        </tr>
-                        <?php foreach ($jobs as $job) : ?>
-                            <tr>
-                                <td><?= $job->_timestamp ?></td>
-                                <td><?= $job->{'job-type'} ?></td>
-                                <td><?= $job->{'target-named-graph'} ?></td>
-                                <td><?= $job->status ?></td>
-                            </tr>
+                                </tr>
+                                <?php foreach ($jobs as $job) : ?>
+                                    <tr>
+                                        <td>
+                                            <a href="<?= $this->url('rdfjobs', ['action' => 'details', 'id' => $dataset->id],['query' => ['jobid' => $job->_id]]) ?>">
+                                                <?= date('Y-m-d - H:i',$job->_timestamp) ?>
+                                            </a>
+                                        </td>
+                                        <td><?= $job->{'job-type'} ?></td>
+                                        <td><?= $job->{'target-named-graph'} ?></td>
+                                        <td><?= $job->status ?></td>
+                                    </tr>
 
-                        <?php endforeach; ?>
+                                <?php endforeach; ?>
 
-                    </table>
+                            </table>
+                        </div>
+                    </div>
+
+
+
                 </div>
 
             </div>
