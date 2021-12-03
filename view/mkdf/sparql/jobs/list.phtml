@@ -45,7 +45,25 @@
                                         </td>
                                         <td><?= $job->{'job-type'} ?></td>
                                         <td><?= $job->{'target-named-graph'} ?></td>
-                                        <td><?= $job->status ?></td>
+
+                                        <?php
+                                        switch ($job->status) {
+                                            case 'PENDING':
+                                                $statusClass = 'bg-warning';
+                                            break;
+                                            case 'COMPLETE':
+                                                $statusClass = 'bg-success';
+                                            break;
+                                            case 'ERROR':
+                                                $statusClass = 'bg-danger';
+                                            break;
+
+                                            default:
+                                                $statusClass = 'bg-warning';
+                                        }
+                                        ?>
+
+                                        <td class="<?= $statusClass ?>"><?= $job->status ?></td>
                                     </tr>
 
                                 <?php endforeach; ?>
