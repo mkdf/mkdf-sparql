@@ -35,7 +35,7 @@
                                     <th>Job type</th>
                                     <th>Target graph</th>
                                     <th>Status</th>
-
+                                    <th>Actions</th>
                                 </tr>
                                 <?php foreach ($jobs as $job) : ?>
                                     <tr>
@@ -65,6 +65,31 @@
                                         ?>
 
                                         <td class="<?= $statusClass ?>"><?= $job->status ?></td>
+                                        <td>
+
+                                            <?php
+                                            if ($can_read) {
+                                                $viewAction = [
+                                                    'class'=>'btn-group-sm',
+                                                    'buttons'=>[
+                                                        ['type'=>'primary','label'=>'', 'icon' => 'view', 'target'=> 'rdfjobs', 'params'=> ['id' => $dataset->id, 'action' => 'details'], 'query' => ['jobid' => $job->_id]],
+                                                    ]
+                                                ];
+                                                print($this->partial('mkdf/core/partial/actions', $viewAction));
+                                            }
+                                            if (can_edit) {
+                                                $deleteFileAction = [
+                                                    'class'=>'btn-group-sm',
+                                                    'buttons'=>[
+                                                        ['type'=>'danger','label'=>'', 'icon' => 'delete', 'target'=> 'file', 'params'=> ['id' => $dataset->id, 'filename' => rawurlencode($f['filenameOriginal']), 'action' => 'delete-confirm'], 'query' => ['key' => $keys[0]['keyUUID']]],
+                                                    ]
+                                                ];
+                                                print($this->partial('mkdf/core/partial/actions', $deleteFileAction));
+                                            }
+
+                                            ?>
+
+                                        </td>
                                     </tr>
 
                                 <?php endforeach; ?>

@@ -106,7 +106,8 @@ class JobsController extends AbstractActionController
 
     public function detailsAction() {
         $messages = [];
-        if ($this->flashMessenger->hasMessages()) {
+        $flashMessenger = $this->flashMessenger();
+        if ($flashMessenger->hasMessages()) {
             foreach($this->flashMessenger->getMessages() as $flashMessage) {
                 $messages[] = [
                     'type' => 'warning',
