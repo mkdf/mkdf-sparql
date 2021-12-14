@@ -111,6 +111,18 @@ class JobsController extends AbstractActionController
                             'status'    => 'PENDING',
                             'message'   => '',
                             'history'   => [],
+                            /*
+                             'history'   => [
+                                [
+                                    'message'   => 'This is message 1',
+                                    'timestamp' => 1639498629
+                                ],
+                                [
+                                    'message'   => 'This is message 2',
+                                    'timestamp' => 1639495028
+                                ],
+                            ],
+                            */
                             'scheduled' => '0',
                             'submitted-by'  => $this->identity(),
                             'modified'  => $this->identity()

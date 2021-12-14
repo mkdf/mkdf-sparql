@@ -17,7 +17,7 @@
                         Query</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'create'], [] ); ?>">Construct</a>
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'create'], [] ); ?>">New jobs</a>
                 </li>
                 <li class="nav-item" role="presentation">
                     <a class="nav-link btn-light" href="">Job list</a>
@@ -65,8 +65,8 @@
                                     <td>Message history</td>
                                     <td>
                                         <ul>
-                                        <?php foreach ($jobs->history as $item) : ?>
-                                            <li><?= $item ?></li>
+                                        <?php foreach ($job->history as $item) : ?>
+                                            <li><em>(<?= date('Y-m-d - H:i',$item->timestamp) ?>)</em> <?= $item->message ?></li>
                                         <?php endforeach; ?>
                                         </ul>
                                     </td>
