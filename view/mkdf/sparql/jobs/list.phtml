@@ -41,7 +41,7 @@
                                     <tr>
                                         <td>
                                             <a href="<?= $this->url('rdfjobs', ['action' => 'details', 'id' => $dataset->id],['query' => ['jobid' => $job->_id]]) ?>">
-                                                <?= date('Y-m-d - H:i',$job->_timestamp) ?>
+                                                <?= date('Y/m/d H:i',$job->_timestamp) ?>
                                             </a>
                                         </td>
                                         <td>
