@@ -60,24 +60,68 @@ class JobsController extends AbstractActionController
 
             if($this->getRequest()->isPost()) {
                 $data = $this->params()->fromPost();
-                $newDoc = [
-                    'dataset'   => $dataset->uuid,
-                    'job-type'  => 'CONSTRUCT',
-                    'query'     => $data['query'],
-                    'target-namespace'  => 'namespace-test',
-                    'target-named-graph' => $data['graphName'],
-                    'status'    => 'PENDING',
-                    'message'   => '',
-                    'history'   => [],
-                    'scheduled' => '0',
-                    'submitted-by'  => $this->identity(),
-                    'modified'  => $this->identity()
-                ];
-                $newDocJSON = json_encode($newDoc);
-                $this->pushCreateJob($newDocJSON);
 
-                $this->flashMessenger()->addMessage('The CONSTRUCT job was added successfully.');
-                return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
+                // Check if this job is a CONSTRUCT/REBUILDGRAPH/REBUILDNAMESPACE
+                switch ($data['jobType']) {
+                    case 'CONSTRUCT':
+                        $newDoc = [
+                            'dataset'   => $dataset->uuid,
+                            'job-type'  => 'CONSTRUCT',
+                            'query'     => $data['query'],
+                            'target-namespace'  => 'namespace-test',
+                            'target-named-graph' => $data['graphName'],
+                            'status'    => 'PENDING',
+                            'message'   => '',
+                            'history'   => [],
+                            'scheduled' => '0',
+                            'submitted-by'  => $this->identity(),
+                            'modified'  => $this->identity()
+                        ];
+                        $newDocJSON = json_encode($newDoc);
+                        $this->pushCreateJob($newDocJSON);
+                        $this->flashMessenger()->addMessage('The CONSTRUCT job was added successfully.');
+                        return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
+                    break; // END OF CONSTRUCT CASE
+
+                    case 'REBUILDGRAPH':
+                        $newDoc = [
+                            'dataset'   => $dataset->uuid,
+                            'job-type'  => 'REBUILDGRAPH',
+                            'target-namespace'  => '',
+                            'target-named-graph' => $data['docID'],
+                            'status'    => 'PENDING',
+                            'message'   => '',
+                            'history'   => [],
+                            'scheduled' => '0',
+                            'submitted-by'  => $this->identity(),
+                            'modified'  => $this->identity()
+                        ];
+                        $newDocJSON = json_encode($newDoc);
+                        $this->pushCreateJob($newDocJSON);
+                        $this->flashMessenger()->addMessage('The REBUILD GRAPH job was added successfully.');
+                        return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
+                    break; // END OF REBUILD GRAPH CASE
+
+                    case 'REBUILDNAMESPACE':
+                        $newDoc = [
+                            'dataset'   => $dataset->uuid,
+                            'job-type'  => 'REBUILDNAMESPACE',
+                            'target-namespace'  => '',
+                            'target-named-graph' => '',
+                            'status'    => 'PENDING',
+                            'message'   => '',
+                            'history'   => [],
+                            'scheduled' => '0',
+                            'submitted-by'  => $this->identity(),
+                            'modified'  => $this->identity()
+                        ];
+                        $newDocJSON = json_encode($newDoc);
+                        $this->pushCreateJob($newDocJSON);
+                        $this->flashMessenger()->addMessage('The REBUILD NAMESPACE job was added successfully.');
+                        return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
+                    break; //END OF REBUILD NAMESPACE CASE
+                } // END OF SWITCH STATEMENT
+
             }
             else {
                 $keys = $this->_keys_repository->userDatasetKeys($user_id,$dataset->id);

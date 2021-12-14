@@ -16,7 +16,7 @@
                         Query</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'create'], [] ); ?>">Construct</a>
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'create'], [] ); ?>">New jobs</a>
                 </li>
                 <li class="nav-item" role="presentation">
                     <a class="nav-link btn-light" href="">Job list</a>
@@ -44,7 +44,19 @@
                                                 <?= date('Y-m-d - H:i',$job->_timestamp) ?>
                                             </a>
                                         </td>
-                                        <td><?= $job->{'job-type'} ?></td>
+                                        <td>
+                                            <?php
+                                                switch ($job->{'job-type'}) {
+                                                    case 'REBUILDGRAPH':
+                                                        $job->{'job-type'} = 'REBUILD GRAPH';
+                                                break;
+                                                case 'REBUILDNAMESPACE':
+                                                    $job->{'job-type'} = 'REBUILD NAMESPACE';
+                                                break;
+                                            }
+                                            ?>
+
+                                            <?= $job->{'job-type'} ?></td>
                                         <td><?= $job->{'target-named-graph'} ?></td>
 
                                         <?php
@@ -52,6 +64,9 @@
                                             case 'PENDING':
                                                 $statusClass = 'bg-warning';
                                             break;
+                                            case 'PROCESSING':
+                                                $statusClass = 'bg-info';
+                                                break;
                                             case 'COMPLETE':
                                                 $statusClass = 'bg-success';
                                             break;
@@ -64,8 +79,8 @@
                                         }
                                         ?>
 
-                                        <td class="<?= $statusClass ?>"><?= $job->status ?></td>
-                                        <td>
+                                        <td class="<?= $statusClass ?> opacity-50"><?= $job->status ?></td>
+                                        <td align="center">
 
                                             <?php
                                             if ($can_read) {
@@ -84,7 +99,7 @@
                                                         ['type'=>'danger','label'=>'', 'icon' => 'delete', 'target'=> 'rdfjobs', 'params'=> ['id' => $dataset->id, 'action' => 'delete-confirm'], 'query' => ['jobid' => $job->_id]],
                                                     ]
                                                 ];
-                                                print($this->partial('mkdf/core/partial/actions', $deleteFileAction));
+                                                // print($this->partial('mkdf/core/partial/actions', $deleteFileAction));
                                             }
 
                                             ?>
