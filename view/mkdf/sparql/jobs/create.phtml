@@ -48,6 +48,7 @@
                                 <div id="yasgui-construct"></div>
                                 <script>
                                     var yasqe2 = YASQE(document.getElementById("yasgui-construct"));
+                                    //yasqe2.setValue("PREFIX : \nCONSTRUCT WHERE { ... }");
                                 </script>
                                 <input type="hidden" name="query" id="query" value="">
                                 <input type="hidden" name="jobType" id="jobType" value="CONSTRUCT">
@@ -126,8 +127,9 @@
 
 <script>
     $(document).ready(function() {
-        $("#goButton").on("click", function () {
+        $("#constructButton").on("click", function () {
             var query = yasqe2.getValue();
+            var type = yasqe2.getQueryType();
             $('#query').val(query);
             $("#addConstructForm").submit();
             e.preventDefault();

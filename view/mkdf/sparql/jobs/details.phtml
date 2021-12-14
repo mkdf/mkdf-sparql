@@ -47,7 +47,7 @@
                                 </tr>
                                 <tr>
                                     <td>Query</td>
-                                    <td><?= $job->query ?></td>
+                                    <td><pre><?= $this->escapeHtml($job->query) ?></pre></td>
                                 </tr>
                                 <tr>
                                     <td>Status</td>
