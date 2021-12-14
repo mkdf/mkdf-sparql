@@ -1,0 +1,132 @@
+<h1><?= $dataset->title ?></h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->partial('mkdf/datasets/partial/dataset-features', ['features' => $features, 'dataset_id' => $dataset->id] ) ?>
+        </div>
+        <div class="col-md-9">
+            <?= $this->partial('mkdf/core/partial/messages', ['messages' => $messages] ) ?>
+            <!--
+            <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
+            -->
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'sparql', ['id'=>$dataset->id, 'action'=>'query'], [] ); ?>">
+                        Query</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'create'], [] ); ?>">New jobs</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-light" href="">Job list</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">SPARQL - Job list</h5>
+                            <table class="table table-bordered table-striped">
+                                <tr class="table-active">
+                                    <th>Time created</th>
+                                    <th>Job type</th>
+                                    <th>Target graph</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                                <?php foreach ($jobs as $job) : ?>
+                                    <tr>
+                                        <td>
+                                            <a href="<?= $this->url('rdfjobs', ['action' => 'details', 'id' => $dataset->id],['query' => ['jobid' => $job->_id]]) ?>">
+                                                <?= date('Y-m-d - H:i',$job->_timestamp) ?>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <?php
+                                                switch ($job->{'job-type'}) {
+                                                    case 'REBUILDGRAPH':
+                                                        $job->{'job-type'} = 'REBUILD GRAPH';
+                                                break;
+                                                case 'REBUILDNAMESPACE':
+                                                    $job->{'job-type'} = 'REBUILD NAMESPACE';
+                                                break;
+                                            }
+                                            ?>
+
+                                            <?= $job->{'job-type'} ?></td>
+                                        <td><?= $job->{'target-named-graph'} ?></td>
+
+                                        <?php
+                                        switch ($job->status) {
+                                            case 'PENDING':
+                                                $statusClass = 'bg-warning';
+                                            break;
+                                            case 'PROCESSING':
+                                                $statusClass = 'bg-info';
+                                                break;
+                                            case 'COMPLETE':
+                                                $statusClass = 'bg-success';
+                                            break;
+                                            case 'ERROR':
+                                                $statusClass = 'bg-danger';
+                                            break;
+
+                                            default:
+                                                $statusClass = 'bg-warning';
+                                        }
+                                        ?>
+
+                                        <td class="<?= $statusClass ?> opacity-50"><?= $job->status ?></td>
+                                        <td align="center">
+
+                                            <?php
+                                            if ($can_read) {
+                                                $viewAction = [
+                                                    'class'=>'btn-group-sm',
+                                                    'buttons'=>[
+                                                        ['type'=>'primary','label'=>'', 'icon' => 'view', 'target'=> 'rdfjobs', 'params'=> ['id' => $dataset->id, 'action' => 'details'], 'query' => ['jobid' => $job->_id]],
+                                                    ]
+                                                ];
+                                                print($this->partial('mkdf/core/partial/actions', $viewAction));
+                                            }
+                                            if (can_edit) {
+                                                $deleteFileAction = [
+                                                    'class'=>'btn-group-sm',
+                                                    'buttons'=>[
+                                                        ['type'=>'danger','label'=>'', 'icon' => 'delete', 'target'=> 'rdfjobs', 'params'=> ['id' => $dataset->id, 'action' => 'delete-confirm'], 'query' => ['jobid' => $job->_id]],
+                                                    ]
+                                                ];
+                                                // print($this->partial('mkdf/core/partial/actions', $deleteFileAction));
+                                            }
+
+                                            ?>
+
+                                        </td>
+                                    </tr>
+
+                                <?php endforeach; ?>
+
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+

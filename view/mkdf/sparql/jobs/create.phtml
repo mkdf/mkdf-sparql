@@ -1,0 +1,146 @@
+<h1><?= $dataset->title ?></h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->partial('mkdf/datasets/partial/dataset-features', ['features' => $features, 'dataset_id' => $dataset->id] ) ?>
+        </div>
+        <div class="col-md-9">
+            <!--
+            <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
+            -->
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'sparql', ['id'=>$dataset->id, 'action'=>'query'], [] ); ?>">
+                        Query</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-light" href="">New jobs</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'list'], [] ); ?>">Job list</a>
+                </li>
+            </ul>
+
+            <!--
+            <ul class="nav nav-tabs" >
+                <li class="nav-item active"><a href="#" >Query</a></li>
+                <li class="nav-item"><a href="status.html" >Jobs</a></li>
+                <li class="nav-item"><a href="settings.html" >Management</a></li>
+            </ul>
+            -->
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <!--<h5 class="card-title">SPARQL Jobs</h5>-->
+                            <p>Use the forms below to construct new graphs, rebuild existing graphs or rebuild the entire dataset namespace.</p>
+
+                            <h6>CONSTRUCT graph</h6>
+
+                            <form name="addConstructForm"
+                                  id="addConstructForm"
+                                  method="POST"
+                                  action="<?=$this->url( 'rdfjobs', ['action' => 'create', 'id' => $dataset->id]); ?>">
+
+                                <div id="yasgui-construct"></div>
+                                <script>
+                                    var yasqe2 = YASQE(document.getElementById("yasgui-construct"));
+                                </script>
+                                <input type="hidden" name="query" id="query" value="">
+                                <input type="hidden" name="jobType" id="jobType" value="CONSTRUCT">
+
+                                <!-- *** User doesn't need to be concerned with this ***
+                                <label for="namespace">Target namespace</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="namespace" id="namespace" placeholder="Target namespace">
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
+
+                                <label for="graphName">Target graph name</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="graphName" id="graphName" placeholder="target graph name...">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button id="constructButton" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Create graph</button>
+
+                            </form>
+
+                            <hr />
+
+                            <h6>Rebuild a single document graph</h6>
+                            <p>If you wish to rebuild the RDF graph for a single document within the dataset, provide the
+                            document ID below.
+                            </p>
+
+                            <form name="rebuildDocForm"
+                                  id="rebuildDocForm"
+                                  method="POST"
+                                  action="<?=$this->url( 'rdfjobs', ['action' => 'create', 'id' => $dataset->id]); ?>">
+                                <label for="docID">Document ID / graph name</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="docID" id="docID" placeholder="document ID / graph name...">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="jobType" id="jobType" value="REBUILDGRAPH">
+                                <button id="graphButton" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Rebuild document graph</button>
+                            </form>
+
+                            <hr />
+
+                            <h6>Rebuild the entire dataset namespace</h6>
+
+                            <p>The entire RDF representation of the this dataset will be rebuilt from scratch.</p>
+                            <form name="rebuildNamespaceForm"
+                                  id="rebuildNamespaceForm"
+                                  method="POST"
+                                  action="<?=$this->url( 'rdfjobs', ['action' => 'create', 'id' => $dataset->id]); ?>">
+                                <input type="hidden" name="jobType" id="jobType" value="REBUILDNAMESPACE">
+                                <button id="namespaceButton" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Rebuild entire RDF namespace</button>
+                            </form>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#goButton").on("click", function () {
+            var query = yasqe2.getValue();
+            $('#query').val(query);
+            $("#addConstructForm").submit();
+            e.preventDefault();
+        });
+        $("#graphButton").on("click", function () {
+            $("#rebuildDocForm").submit();
+            e.preventDefault();
+        });
+        $("#namespaceButton").on("click", function () {
+            $("#rebuildNamespaceForm").submit();
+            e.preventDefault();
+        });
+    });
+</script>
+
+

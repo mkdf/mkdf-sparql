@@ -1,0 +1,98 @@
+<h1><?= $dataset->title ?></h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->partial('mkdf/datasets/partial/dataset-features', ['features' => $features, 'dataset_id' => $dataset->id] ) ?>
+        </div>
+        <div class="col-md-9">
+            <?= $this->partial('mkdf/core/partial/messages', ['messages' => $messages] ) ?>
+
+            <!--
+            <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
+            -->
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'sparql', ['id'=>$dataset->id, 'action'=>'query'], [] ); ?>">
+                        Query</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-secondary" href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'create'], [] ); ?>">Construct</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link btn-light" href="">Job list</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">SPARQL - Job details</h5>
+
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>Created</td>
+                                    <td><?= date('Y-m-d - H:i',$job->_timestamp) ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td><?= $job->{'job-type'} ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Target graph</td>
+                                    <td><?= $job->{'target-named-graph'} ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Query</td>
+                                    <td><?= $job->query ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td><?= $job->status ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Submitted by</td>
+                                    <td><?= $job->{'submitted-by'} ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Last message</td>
+                                    <td><?= $job->message ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Message history</td>
+                                    <td>
+                                        <ul>
+                                        <?php foreach ($jobs->history as $item) : ?>
+                                            <li><?= $item ?></li>
+                                        <?php endforeach; ?>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <a href="<?= $this->url( 'rdfjobs', ['id'=>$dataset->id, 'action'=>'list'], [] ); ?>">
+                                <i class="fas fa-undo"></i> Return to job list
+                            </a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
