@@ -61,15 +61,24 @@ class JobsController extends AbstractActionController
             if($this->getRequest()->isPost()) {
                 $data = $this->params()->fromPost();
 
+
                 // Check if this job is a CONSTRUCT/REBUILDGRAPH/REBUILDNAMESPACE
                 switch ($data['jobType']) {
                     case 'CONSTRUCT':
+                        if(isset($data['clearGraph']) && $data['clearGraph'] == '1'){
+                            $data['clearGraph'] = true;
+                        }
+                        else {
+                            $data['clearGraph'] = false;
+                        }
+
                         $newDoc = [
                             'dataset'   => $dataset->uuid,
                             'job-type'  => 'CONSTRUCT',
                             'query'     => $data['query'],
                             'target-namespace'  => 'namespace-test',
                             'target-named-graph' => $data['graphName'],
+                            'clear-graph'       => $data['clearGraph'],
                             'status'    => 'PENDING',
                             'message'   => '',
                             'history'   => [],
