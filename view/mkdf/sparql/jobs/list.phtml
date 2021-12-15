@@ -33,7 +33,7 @@
                                 <tr class="table-active">
                                     <th>Time created</th>
                                     <th>Job type</th>
-                                    <th>Target graph</th>
+                                    <th>Target</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -46,18 +46,28 @@
                                         </td>
                                         <td>
                                             <?php
+                                                $targetLabel = '';
                                                 switch ($job->{'job-type'}) {
+                                                    case 'CONSTRUCT':
+                                                        $job->{'job-type'} = 'CONSTRUCT';
+                                                        $targetLabel = $job->{'target-named-graph'};
+                                                        break;
                                                     case 'REBUILDGRAPH':
                                                         $job->{'job-type'} = 'REBUILD GRAPH';
-                                                break;
-                                                case 'REBUILDNAMESPACE':
-                                                    $job->{'job-type'} = 'REBUILD NAMESPACE';
-                                                break;
+                                                        $targetLabel = $job->{'document-id'};
+                                                    break;
+                                                    case 'REBUILDDATASET':
+                                                        $job->{'job-type'} = 'REBUILD DATASET';
+                                                        $targetLabel = 'entire dataset';
+                                                    break;
                                             }
                                             ?>
 
                                             <?= $job->{'job-type'} ?></td>
-                                        <td><?= $job->{'target-named-graph'} ?></td>
+
+
+
+                                        <td><?= $targetLabel ?></td>
 
                                         <?php
                                         switch ($job->status) {

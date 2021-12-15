@@ -88,7 +88,8 @@ class JobsController extends AbstractActionController
                             'dataset'   => $dataset->uuid,
                             'job-type'  => 'REBUILDGRAPH',
                             'target-namespace'  => '',
-                            'target-named-graph' => $data['docID'],
+                            'target-named-graph' => '',
+                            'document-id'   => $data['docID'],
                             'status'    => 'PENDING',
                             'message'   => '',
                             'history'   => [],
@@ -102,10 +103,10 @@ class JobsController extends AbstractActionController
                         return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
                     break; // END OF REBUILD GRAPH CASE
 
-                    case 'REBUILDNAMESPACE':
+                    case 'REBUILDDATASET':
                         $newDoc = [
                             'dataset'   => $dataset->uuid,
-                            'job-type'  => 'REBUILDNAMESPACE',
+                            'job-type'  => 'REBUILDDATASET',
                             'target-namespace'  => '',
                             'target-named-graph' => '',
                             'status'    => 'PENDING',
@@ -129,7 +130,7 @@ class JobsController extends AbstractActionController
                         ];
                         $newDocJSON = json_encode($newDoc);
                         $this->pushCreateJob($newDocJSON);
-                        $this->flashMessenger()->addMessage('The REBUILD NAMESPACE job was added successfully.');
+                        $this->flashMessenger()->addMessage('The REBUILD DATASET job was added successfully.');
                         return $this->redirect()->toRoute('rdfjobs', ['action'=>'list', 'id'=>$id]);
                     break; //END OF REBUILD NAMESPACE CASE
                 } // END OF SWITCH STATEMENT

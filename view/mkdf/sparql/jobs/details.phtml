@@ -33,6 +33,24 @@
 
 
                             <table class="table table-bordered">
+                                <?php
+                                $targetLabel = '';
+                                switch ($job->{'job-type'}) {
+                                    case 'CONSTRUCT':
+                                        $job->{'job-type'} = 'CONSTRUCT';
+                                        $targetLabel = $job->{'target-named-graph'};
+                                        break;
+                                    case 'REBUILDGRAPH':
+                                        $job->{'job-type'} = 'REBUILD GRAPH';
+                                        $targetLabel = $job->{'document-id'};
+                                        break;
+                                    case 'REBUILDDATASET':
+                                        $job->{'job-type'} = 'REBUILD DATASET';
+                                        $targetLabel = 'entire dataset';
+                                        break;
+                                }
+                                ?>
+
                                 <tr>
                                     <td>Created</td>
                                     <td><?= date('Y/m/d H:i',$job->_timestamp) ?></td>
@@ -42,8 +60,8 @@
                                     <td><?= $job->{'job-type'} ?></td>
                                 </tr>
                                 <tr>
-                                    <td>Target graph</td>
-                                    <td><?= $job->{'target-named-graph'} ?></td>
+                                    <td>Target</td>
+                                    <td><?= $targetLabel ?></td>
                                 </tr>
                                 <tr>
                                     <td>Query</td>

@@ -88,11 +88,11 @@
                                   id="rebuildDocForm"
                                   method="POST"
                                   action="<?=$this->url( 'rdfjobs', ['action' => 'create', 'id' => $dataset->id]); ?>">
-                                <label for="docID">Document ID / graph name</label>
+                                <label for="docID">Document ID</label>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="docID" id="docID" placeholder="document ID / graph name...">
+                                            <input type="text" class="form-control" name="docID" id="docID" placeholder="document ID...">
                                         </div>
                                     </div>
                                 </div>
@@ -102,15 +102,15 @@
 
                             <hr />
 
-                            <h6>Rebuild the entire dataset namespace</h6>
+                            <h6>Rebuild the entire dataset</h6>
 
                             <p>The entire RDF representation of the this dataset will be rebuilt from scratch.</p>
                             <form name="rebuildNamespaceForm"
                                   id="rebuildNamespaceForm"
                                   method="POST"
                                   action="<?=$this->url( 'rdfjobs', ['action' => 'create', 'id' => $dataset->id]); ?>">
-                                <input type="hidden" name="jobType" id="jobType" value="REBUILDNAMESPACE">
-                                <button id="namespaceButton" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Rebuild entire RDF namespace</button>
+                                <input type="hidden" name="jobType" id="jobType" value="REBUILDDATASET">
+                                <button id="namespaceButton" class="btn btn-primary btn-sm align-baseline"><i class="fas fa-play"></i> Rebuild entire dataset</button>
                             </form>
 
 
