@@ -67,6 +67,16 @@
                                     <td>Query</td>
                                     <td><pre><?= $this->escapeHtml($job->query) ?></pre></td>
                                 </tr>
+                                <?php if(isset($job->{'clear-graph'})): ?>
+                                    <?php
+                                        $clearGraph = ($job->{'clear-graph'}) ? 'Yes' : 'No';
+                                    ?>
+                                    <tr>
+                                        <td>Clear existing graph</td>
+                                        <td><?= $clearGraph ?></td>
+                                    </tr>
+
+                                <?php endif; ?>
                                 <tr>
                                     <td>Status</td>
                                     <td><?= $job->status ?></td>
