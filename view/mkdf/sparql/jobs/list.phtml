@@ -98,7 +98,7 @@
                                                 ];
                                                 print($this->partial('mkdf/core/partial/actions', $viewAction));
                                             }
-                                            if (can_edit) {
+                                            if ($can_edit) {
                                                 $deleteFileAction = [
                                                     'class'=>'btn-group-sm',
                                                     'buttons'=>[
