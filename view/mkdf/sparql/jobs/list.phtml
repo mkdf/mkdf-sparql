@@ -40,9 +40,9 @@
                                 <?php foreach ($jobs as $job) : ?>
                                     <tr>
                                         <td>
-                                            <a href="<?= $this->url('rdfjobs', ['action' => 'details', 'id' => $dataset->id],['query' => ['jobid' => $job->_id]]) ?>">
+                                            <!-- <a href="<?= $this->url('rdfjobs', ['action' => 'details', 'id' => $dataset->id],['query' => ['jobid' => $job->_id]]) ?>"> -->
                                                 <?= date('Y/m/d H:i',$job->_timestamp) ?>
-                                            </a>
+                                            <!-- </a> -->
                                         </td>
                                         <td>
                                             <?php
@@ -98,7 +98,7 @@
                                                 ];
                                                 print($this->partial('mkdf/core/partial/actions', $viewAction));
                                             }
-                                            if (can_edit) {
+                                            if ($can_edit) {
                                                 $deleteFileAction = [
                                                     'class'=>'btn-group-sm',
                                                     'buttons'=>[
