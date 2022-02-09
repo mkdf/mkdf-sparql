@@ -51,8 +51,8 @@ class SparqlController extends AbstractActionController
                 $docCount = $this->_repository->getDocCount($dataset->uuid)['totalDocs'];
             }
             else {
-                $this->flashMessenger()->addErrorMessage('Data API not yet activated');
-                return $this->redirect()->toRoute('stream', ['action'=>'details']);
+                $this->flashMessenger()->addMessage('Data API not yet activated');
+                return $this->redirect()->toRoute('stream', ['action'=>'details', 'id' => $id]);
             }
             $actions = [
                 'label' => 'Actions',
@@ -80,7 +80,7 @@ class SparqlController extends AbstractActionController
             ]);
         }
         else{
-            $this->flashMessenger()->addErrorMessage('You do not have a read key on this dataset');
+            $this->flashMessenger()->addMessage('You do not have a read key on this dataset');
             return $this->redirect()->toRoute('dataset', ['action'=>'details', 'id'=>$dataset->id]);
         }
     }

@@ -42,7 +42,7 @@
         <div id="queryRunning" class="alert alert-primary" role="alert">
             Query running...
         </div>
-        <div id="errorBox" class="alert alert-danger" role="alert">
+        <div id="errorBox" class="alert alert-warning" role="alert">
             Error
         </div>
     <div id="yasr"></div>
@@ -111,13 +111,13 @@
                     error = "Error: Invalid SPARQL query";
                     break;
                 case 401:
-                    error = "Authentication error: There is a problem with your key";
+                    error = "Authentication error: The key provided does not have read access on this dataset. Check that access for this key has not been disabled";
                     break;
                 case 404:
                     error = "Graph database not found. This dataset may not yet be enabled for SPARQL queries";
                     break;
                 default:
-                    error = "An error occurred. This dataset may not yet be enabled for SPARQL queries";
+                    error = "An error occurred. The graph database may be offline or this dataset may not yet be enabled for SPARQL queries";
             }
             $("#errorBox").html(error);
             $("#errorBox").show();
